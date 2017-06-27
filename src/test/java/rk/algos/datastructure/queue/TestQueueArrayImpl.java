@@ -1,5 +1,7 @@
 package rk.algos.datastructure.queue;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,8 +31,8 @@ public class TestQueueArrayImpl extends AlgoTestingBase {
         Assert.assertTrue(queue.isEmpty());
         Assert.assertTrue(queue.size() == 0);
         queue.enqueue(1);
-        queue.enqueue(1);
-        queue.enqueue(1);
+        queue.enqueue(5);
+        queue.enqueue(10);
         queue.dequeue();
         queue.dequeue();
         queue.dequeue();
@@ -51,30 +53,25 @@ public class TestQueueArrayImpl extends AlgoTestingBase {
     }
 
     @Test
-    public void testQueueOverflow() {
-        print("Beginning testQueueOverflow");
-        for (int i = 0; i < 10; i++) {
+    public void testQueueResizing() {
+        print("Beginning testQueueResizing");
+        for (int i = 0; i < 20; i++) {
             queue.enqueue(i);
         }
+        Assert.assertFalse(queue.isEmpty());
+        Assert.assertTrue(queue.size() == 20);
 
-        exception.expect(IndexOutOfBoundsException.class);
-        exception.expectMessage("Queue Overflow!!!");
-
-        queue.enqueue(11);
-    }
-
-    @Test
-    public void testSimpleDequeue() {
-        //TODO
+        for (int i = 0; i < 20; i++) {
+            Assert.assertTrue(queue.dequeue() == i);
+        }
+        print("Completed testQueueResizing");
     }
 
     @Test
     public void testDequeueUnderflow() {
-        //TODO
-    }
-
-    @Test
-    public void testEnqueueAndDequeueWrapping() {
-        //TODO
+        Assert.assertTrue(queue.size() == 0);
+        exception.expect(NoSuchElementException.class);
+        exception.expectMessage("Queue underflow - no items in the queue to dequeue");
+        queue.dequeue();
     }
 }

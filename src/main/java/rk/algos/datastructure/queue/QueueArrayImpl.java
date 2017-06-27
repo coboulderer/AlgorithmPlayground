@@ -14,25 +14,30 @@ public class QueueArrayImpl<T> implements Queue<T> {
 
     @SuppressWarnings("unchecked")
     public QueueArrayImpl() {
-        array = (T[]) new Object[10];
-    }
-
-    @SuppressWarnings("unchecked")
-    public QueueArrayImpl(int initialSize) {
-        array = (T[]) new Object[initialSize];
+        array = (T[]) new Object[2];
     }
 
     @Override
     public void enqueue(T t) {
-        if (size >= array.length) {
-            throw new IndexOutOfBoundsException("Queue Overflow!!!");
-        } else {
-            if (rear == array.length) {
-                rear = 0;
-            }
-            array[rear++] = t;
-            size++;
+        if (size == array.length) {
+            resize(2 * array.length);
         }
+        array[rear++] = t;
+        if (rear == array.length) {
+            rear = 0;
+        }
+        size++;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize(int newCapacity) {
+        T[] temp = (T[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            temp[i] = array[(front + i) % array.length];
+        }
+        array = temp;
+        front = 0;
+        rear = size;
     }
 
     @Override
@@ -43,6 +48,9 @@ public class QueueArrayImpl<T> implements Queue<T> {
             size--;
             if (front == array.length) {
                 front = 0;
+            }
+            if (size > 0 && size == array.length / 4) {
+                resize(array.length / 2);
             }
             return t;
         } else {

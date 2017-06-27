@@ -2,21 +2,21 @@ package rk.algos.datastructure.queue;
 
 import java.util.NoSuchElementException;
 
-import rk.algos.datastructure.Node;
+import rk.algos.datastructure.LinkedListNode;
 
 /**
  * Implementation of Queue using Linked List Data Structure
  */
 public class QueueLinkedListImpl<T> implements Queue<T> {
 
-    private Node<T> front;
-    private Node<T> end;
+    private LinkedListNode<T> front;
+    private LinkedListNode<T> end;
     private int size;
 
     @Override
     public void enqueue(T t) {
-        Node oldLast = end;
-        end = new Node<>();
+        LinkedListNode oldLast = end;
+        end = new LinkedListNode<>();
         end.t = t;
         end.next = null;
         if (isEmpty()) {

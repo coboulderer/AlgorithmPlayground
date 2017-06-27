@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  */
 public class StackArrayImpl<T> implements Stack<T>{
 
-    private int stackSize;
+    private int topOfStack;
     private T[] array;
 
     @SuppressWarnings("unchecked")
@@ -15,55 +15,42 @@ public class StackArrayImpl<T> implements Stack<T>{
         array = (T[]) new Object[10];
     }
 
-    @SuppressWarnings("unchecked")
-    public StackArrayImpl(int initialStackSize) {
-        this.stackSize = initialStackSize;
-        array = (T[]) new Object[stackSize];
-    }
-
     @Override
     public void push(T t) {
-        checkAndDoubleArraySize();
-        array[stackSize++] = t;
+        if (topOfStack == array.length) {
+            resize(array.length * 2);
+        }
+        array[topOfStack++] = t;
     }
 
     @SuppressWarnings("unchecked")
-    private void checkAndDoubleArraySize() {
-        if (stackSize == array.length) {
-            T[] temp = (T[]) new Object[array.length * 2];
-            System.arraycopy(array, 0, temp, 0, array.length);
-            array = temp;
-        }
+    private void resize(int newSize) {
+        T[] temp = (T[]) new Object[newSize];
+        System.arraycopy(array, 0, temp, 0, topOfStack);
+        array = temp;
     }
 
     @Override
     public T pop() {
         if (!isEmpty()) {
-            T t = array[--stackSize];
-            array[stackSize] = null;
-            checkAndHalfArraySize();
+            T t = array[--topOfStack];
+            array[topOfStack] = null;
+            if (topOfStack <= array.length / 4) {
+                resize(array.length / 2);
+            }
             return t;
         } else {
             throw new NoSuchElementException("rk.algos.datastructure.stack.Stack underflow - nothing to pop!!");
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void checkAndHalfArraySize() {
-        if (stackSize <= array.length / 4) {
-            T[] temp = (T[]) new Object[array.length / 2];
-            System.arraycopy(array, 0, temp, 0, stackSize);
-            array = temp;
-        }
-    }
-
     @Override
     public boolean isEmpty() {
-        return stackSize == 0;
+        return topOfStack == 0;
     }
 
     @Override
     public int size() {
-        return stackSize;
+        return topOfStack;
     }
 }

@@ -2,20 +2,20 @@ package rk.algos.datastructure.stack;
 
 import java.util.NoSuchElementException;
 
-import rk.algos.datastructure.Node;
+import rk.algos.datastructure.LinkedListNode;
 
 /**
  * Stack Data Structure using a Linked List
  */
 public class StackLinkedListImpl<T> implements Stack<T> {
 
-    private Node<T> front;
+    private LinkedListNode<T> front;
     private int size;
 
     @Override
     public void push(T t) {
-        Node<T> oldFront = front;
-        front = new Node<>();
+        LinkedListNode<T> oldFront = front;
+        front = new LinkedListNode<>();
         front.t = t;
         front.next = oldFront;
         size++;
