@@ -7,7 +7,7 @@ package rk.algos.sorts;
  */
 public class SelectionSort {
 
-    public static <T extends Comparable<T>> T[] sort(T[] array) {
+    public static <T extends Comparable<T>> void sort(T[] array) {
         for (int i = 0; i < array.length; i++) {
             int min = i;
             for (int j = i + 1; j < array.length; j++) {
@@ -19,6 +19,5 @@ public class SelectionSort {
             array[min] = array[i];
             array[i] = t;
         }
-        return array;
     }
 }

@@ -7,7 +7,7 @@ package rk.algos.sorts;
  */
 public class InsertionSort {
 
-    public static <T extends Comparable<T>> T[] sort(T[] array) {
+    public static <T extends Comparable<T>> void sort(T[] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = i; j > 0; j--) {
                 if (array[j].compareTo(array[j - 1]) < 0) {
@@ -19,6 +19,5 @@ public class InsertionSort {
                 }
             }
         }
-        return array;
     }
 }
