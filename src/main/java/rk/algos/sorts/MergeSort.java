@@ -6,9 +6,12 @@ package rk.algos.sorts;
  */
 public class MergeSort {
 
+    public static long inversionCounter = 0;
+
     @SuppressWarnings("unchecked")
     public static <T extends Comparable<T>> void sort(T[] array) {
         T[] aux = (T[])new Comparable[array.length];
+        inversionCounter = 0;
         sort(array, aux, 0, array.length - 1);
     }
 
@@ -38,6 +41,7 @@ public class MergeSort {
                 array[k] = aux[i];
                 i++;
             } else if (aux[j].compareTo(aux[i]) < 0) {
+                inversionCounter += (mid + 1 - i);
                 array[k] = aux[j];
                 j++;
             } else {
