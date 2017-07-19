@@ -2,7 +2,7 @@ package rk.algos.sorts;
 
 /**
  * Mergesort Implementation using Java Comparable Interface
- * Notes etc. - Java uses Mergesort on Objects, Quicksort for
+ *
  */
 public class MergeSort {
 
