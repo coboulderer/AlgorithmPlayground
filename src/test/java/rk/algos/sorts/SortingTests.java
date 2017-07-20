@@ -57,15 +57,15 @@ public class SortingTests extends AlgoTestingBase {
 
     @Test
     public void checkInversionsFromFile() {
-        Integer[] intsFromFile = readIntsFromFile();
+        Integer[] intsFromFile = readIntsFromFile("IntegerArray.txt", 10000);
         MergeSort.sort(intsFromFile);
         print("Inversions:: " + MergeSort.inversionCounter);
     }
 
-    private Integer[] readIntsFromFile() {
-        Integer[] intsFromFile = new Integer[100000];
+    private Integer[] readIntsFromFile(String fileName, int size) {
+        Integer[] intsFromFile = new Integer[size];
         try (Scanner scanner = new Scanner(new File(getClass().getClassLoader().
-                getResource("IntegerArray.txt").getFile()))) {
+                getResource(fileName).getFile()))) {
             for (int i = 0; scanner.hasNextInt() && i < intsFromFile.length; i++ ) {
                 intsFromFile[i] = scanner.nextInt();
             }
@@ -78,7 +78,9 @@ public class SortingTests extends AlgoTestingBase {
     @Test
     public void testQuickSort() {
         print("Testing basic quicksort");
-        // TODO
+        Integer[] quickSortInts = readIntsFromFile("QuickSortTestFile.txt", 10000);
+        QuickSort.quickSort(quickSortInts);
+        isSorted(quickSortInts);
     }
 
     private void isSorted(Integer[] integers) {
