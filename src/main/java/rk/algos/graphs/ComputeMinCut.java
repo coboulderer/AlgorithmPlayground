@@ -14,8 +14,7 @@ public class ComputeMinCut {
         vertices = nVertices;
         while (vertices.size() > 2) {
             int nIndexOne = getRandomInt(vertices.size());
-            int randEdgeIndex = getRandomInt(vertices.get(nIndexOne).mEdgesList.size());
-            performCut(nIndexOne, randEdgeIndex);
+            performCut(nIndexOne);
         }
         return vertices.get(0).mEdgesList.size();
     }
@@ -25,41 +24,46 @@ public class ComputeMinCut {
         return random.nextInt(bound);
     }
 
-    // TODO clean up & optimize
-    private static void performCut(int nVertexIndex, int mEdgeIndex) {
-        Vertex nOne = vertices.remove(nVertexIndex);
+    private static void performCut(int nIndexOne) {
+        Vertex nOne = vertices.remove(nIndexOne);
+        int nIndexTwo = getConnectedVertexRandomlyFromEdges(nOne);
+        Vertex nTwo = vertices.remove(nIndexTwo);
+        Vertex combinedVertex = combineVertices(nOne, nTwo);
+        updateAllOtherVertices(nOne.value, nTwo.value, combinedVertex.value);
+        vertices.add(combinedVertex);
+    }
+
+    private static int getConnectedVertexRandomlyFromEdges(Vertex n) {
+        int randEdgeIndex = getRandomInt(n.mEdgesList.size());
         int foundIndex = 0;
         for (int i = 0; i < vertices.size(); i++) {
-            if (vertices.get(i).value == nOne.mEdgesList.get(mEdgeIndex)) {
+            if (vertices.get(i).value == n.mEdgesList.get(randEdgeIndex)) {
                 foundIndex = i;
                 break;
             }
         }
-        Vertex nTwo = vertices.remove(foundIndex);
-        checkForNullVertex(nTwo);
+        return foundIndex;
+    }
+
+    private static Vertex combineVertices(Vertex nOne, Vertex nTwo) {
         Vertex combinedVertex = new Vertex();
-        combinedVertex.value = nOne.value + nTwo.value + 200;
+        combinedVertex.value = nOne.value + nTwo.value + getRandomInt(200) + 200;
         //remove future self refs that would exist after nOne and nTwo are collapsed
         nOne.mEdgesList.removeIf(m -> m == nTwo.value);
         nTwo.mEdgesList.removeIf(m -> m == nOne.value);
         combinedVertex.mEdgesList.addAll(nOne.mEdgesList);
         combinedVertex.mEdgesList.addAll(nTwo.mEdgesList);
-
-        //update old edges to point to new vertex
-        for (int n = 0; n < vertices.size(); n++) {
-            for (int m = 0; m < vertices.get(n).mEdgesList.size(); m++) {
-                if (vertices.get(n).mEdgesList.get(m) == nOne.value ||
-                        vertices.get(n).mEdgesList.get(m) == nTwo.value) {
-                    vertices.get(n).mEdgesList.set(m, combinedVertex.value);
-                }
-            }
-        }
-        vertices.add(combinedVertex);
+        return combinedVertex;
     }
 
-    private static void checkForNullVertex(Vertex n) {
-        if (n == null) {
-            throw new NullPointerException("n is NULL!!");
+    private static void updateAllOtherVertices(int nOneValue, int nTwoValue, int combinedValue) {
+        // TODO - improve quadratic runtime possible?
+        for (int n = 0; n < vertices.size(); n++) {
+            for (int m = 0; m < vertices.get(n).mEdgesList.size(); m++) {
+                if (vertices.get(n).mEdgesList.get(m) == nOneValue || vertices.get(n).mEdgesList.get(m) == nTwoValue) {
+                    vertices.get(n).mEdgesList.set(m, combinedValue);
+                }
+            }
         }
     }
 }
