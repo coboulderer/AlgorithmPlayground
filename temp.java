@@ -1,5 +1,6 @@
 package rk.algos.codewars;
 
+//sample regex pattern to use t[mqdzj][^j]*
 public class AlphabetWars {
 
     private static String myBattleField;
