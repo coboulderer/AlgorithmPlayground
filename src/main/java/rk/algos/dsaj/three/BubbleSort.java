@@ -2,28 +2,25 @@ package rk.algos.dsaj.three;
 
 public class BubbleSort {
 
-    private int[] array;
-
-    public int[] bubbleSort(int[] input) {
-        array = input;
+    public int[] bubbleSort(int[] array) {
         for (int i = array.length - 1; i > 0; i--) {
             boolean swapped = false;
             for (int j = 0; j < i; j++) {
                 if (array[j] > array[j + 1]) {
-                    swapped = swap(j, j + 1);
+                    swapped = swap(array, j);
                 }
             }
             if (!swapped) {
                 break;
             }
         }
-        return input;
+        return array;
     }
 
-    private boolean swap(int lo, int high) {
-        int temp = array[high];
-        array[high] = array[lo];
-        array[lo] = temp;
+    private boolean swap(int[] array, int index) {
+        int temp = array[index];
+        array[index] = array[index + 1];
+        array[index + 1] = temp;
         return true;
     }
 }
