@@ -69,9 +69,7 @@ public class OrderedArray {
     }
 
     public void merge(long[] arrayOne, long[] arrayTwo) {
-        int lengthOne = arrayOne.length;
-        int lengthTwo = arrayTwo.length;
-        array = new long[lengthOne + lengthTwo];
+        array = new long[arrayOne.length + arrayTwo.length];
         int indexOne = 0, indexTwo = 0;
         for (int i = 0; i < array.length; i++) {
             if (indexOne < arrayOne.length && indexTwo < arrayTwo.length) {
